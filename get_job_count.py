@@ -11,11 +11,12 @@ response = requests.get(
   }
 )
 
+f = open('out.txt','w')
+f.write(response.text)
+f.close()
+
 if(response.status_code != 200):
   print('request failed')
-  f = open('out.txt','w')
-  f.write(response.text)
-  f.close()
   exit(response.status_code)
 
 soup = BeautifulSoup(response.text, 'lxml')
@@ -23,8 +24,8 @@ jobElements = soup.css.select('.jobsearch-JobCountAndSortPane-jobCount > span:fi
 
 if (jobElements.count == 0):
   print('could not find job count')
-  print(soup.prettify())
-else:
-  jobText = jobElements[0].get_text()
-  jobCount = int(re.match("(\d|,)+", jobText).group(0).replace(',', ''))
-  print(jobCount)
+  exit(1)
+  
+jobText = jobElements[0].get_text()
+jobCount = int(re.match("(\d|,)+", jobText).group(0).replace(',', ''))
+print(jobCount)
