@@ -17,11 +17,31 @@ def zip_to_json(in_file,out_file):
 
             # zip function creates a tuple containing
             for k, v in zip(keys, values.split('\t')):
-                data_dict[k] = v.strip()
+                if k == 'postal_code':
+                    v = int(v)
+                    data_dict[k] = v
+                elif k == 'latitude':
+                    v = float(v)
+                    data_dict[k] = v
+                elif k == 'longitude':
+                    v = float(v)
+                    data_dict[k] = v
+                else:
+                    data_dict[k] = v.strip()
             
             # adds dictionary with country, zip code, city, state, 
             # latitute, and longitude to list of city dicts
             city_dict_list.append(data_dict)
+
+    # for city in city_dict_list:
+    #     print(city["latitude"])
+    #     lat = float(city["latitude"])
+    #     print(type(lat))
+
+        # lat = float(city["latitude"])
+        # city["latitude"] = lat
+        # lon = float(city("longitude"))
+        # city["longitude"] = lon
 
     # dumps city_dict_list into a json file
     with open(out_file, 'w', encoding='utf-8') as o_f:
